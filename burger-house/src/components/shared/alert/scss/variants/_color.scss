@@ -1,0 +1,27 @@
+@use '../mixins' as *;
+@use 'src/scss/variables' as *;
+@use 'src/scss/mixins' as *;
+
+.success {
+  @include alertVariant($color-success);
+
+  @include respond(phone-lg) {
+    @include alertVariant($color-success, 0.7);
+  }
+
+  &--dark {
+    @include alertDarkVariant($color-success);
+  }
+}
+
+.danger {
+  @include alertVariant($color-danger);
+
+  @include respond(phone-lg) {
+    @include alertVariant($color-danger, 0.7);
+  }
+
+  &--dark {
+    @include alertDarkVariant($color-danger);
+  }
+}

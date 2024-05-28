@@ -1,0 +1,38 @@
+/////////////////////////////////
+// Colors
+
+$color-white: hsl(0, 0%, 100%);
+$color-black: hsl(0, 0%, 0%);
+
+$color-primary: hsl(24, 100%, 25%);
+$color-secondary: hsl(35, 100%, 81%);
+$color-tertiary: #006ac7;
+
+$color-primary-light: hsl(22, 54%, 47%);
+
+$color-success: #05b770;
+
+$color-danger-light: #ce5a78;
+$color-danger: #bd385b;
+
+$color-dark: hsl(0, 0%, 20%);
+$color-light: hsl(0, 0%, 97%);
+
+$color-gray: hsl(0, 3%, 70%);
+$color-gray-light: hsl(0, 0%, 87%);
+
+// color map
+$colors: (
+  white: $color-white,
+  black: $color-black,
+  primary: $color-primary,
+  'primary-light': $color-primary-light,
+  secondary: $color-secondary,
+  tertiary: $color-tertiary,
+  success: $color-success,
+  'danger-light': $color-danger-light,
+  danger: $color-danger,
+  dark: $color-dark,
+  light: $color-light,
+  gray: $color-gray,
+);

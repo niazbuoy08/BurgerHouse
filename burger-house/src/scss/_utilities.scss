@@ -1,0 +1,50 @@
+@use './variables' as *;
+
+@each $name, $font-weight in $font-weights {
+  .u-fw-#{'' + $name} {
+    font-weight: $font-weight !important;
+  }
+}
+
+@each $name, $text-transform in $text-tranforms {
+  .u-text-#{'' + $name} {
+    text-transform: $text-transform !important;
+  }
+}
+
+@each $name, $color in $colors {
+  .u-text-#{'' + $name} {
+    color: $color !important;
+  }
+}
+
+@each $name, $align in $text-align {
+  .u-text-#{'' + $name} {
+    text-align: $align !important;
+  }
+}
+
+.u-jc-center {
+  justify-content: center !important;
+}
+
+.u-hide-scrollbar {
+  &::-webkit-scrollbar,
+  & > *::-webkit-scrollbar {
+    display: none;
+  }
+
+  scrollbar-width: none;
+}
+
+.u-block {
+  display: block !important;
+}
+
+.u-fs-18 {
+  font-size: 1.8rem !important;
+}
+
+.u-fs-13 {
+  font-size: 1.3rem !important;
+}

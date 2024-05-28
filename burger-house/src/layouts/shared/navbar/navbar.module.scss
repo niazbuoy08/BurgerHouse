@@ -1,0 +1,83 @@
+@use '/src/scss/variables' as *;
+@use '/src/scss/mixins' as *;
+
+.root {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background-color: transparent; // Ensure this line is present and not overridden
+  z-index: 15;
+  padding: 0 2rem;
+  box-shadow: 0 2px 5px rgba($color-black, 0.1); // subtle shadow for depth
+
+  @include respond(laptop-md) {
+    padding: 0 1.5rem;
+  }
+
+  @include respond(phone-lg) {
+    flex-direction: column;
+    padding: 0 1rem;
+  }
+}
+
+.brand {
+  font-size: 2.5rem;
+  font-family: $font-brand;
+  cursor: pointer;
+  color: $color-primary; // assuming you have a primary color that suits your branding
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+
+  @include respond(phone-lg) {
+    font-size: 2rem;
+    padding: 1rem 0; // adds padding on smaller screens
+  }
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 2rem; // increased gap for a more spacious feel
+  list-style: none;
+
+  @include respond(tab-land) {
+    display: none; // hides navbar on tablet landscape and smaller
+  }
+
+  a {
+    color: $color-dark;
+    text-decoration: none;
+    font-size: 1.2rem;
+    padding: 0.5rem 0;
+
+    &:hover {
+      color: $color-primary;
+    }
+  }
+}
+
+.toggle {
+  display: none;
+  @include respond(tab-land) {
+    display: block; // shows toggle button on tablet landscape and smaller
+    margin-left: auto; // ensures it sticks to the end
+  }
+}
+
+.nav--mobile {
+  display: none;
+  @include respond(tab-land) {
+    display: flex;
+    flex-direction: column;
+    width: 100%; // full width
+    padding: 1rem 0; // adds padding to the mobile nav
+
+    a {
+      padding: 0.75rem 2rem;
+    }
+  }
+}
