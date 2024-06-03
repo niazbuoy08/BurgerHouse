@@ -19,15 +19,28 @@ const LoginPage: NextPageWithLayout = ({}) => {
   const router = useRouter();
   const { mutate, isLoading } = trpc.auth.login.useMutation({
     onSuccess(data) {
-      context.auth.user.setData(undefined, data);
+      console.log('Login successful:', data);
+      context.auth.user.setData(data);
+      localStorage.setItem('user', JSON.stringify(data));
     },
     onError(error) {
+      console.error('Login error:', error);
       setAlert('danger', error.message || "We couldn't log you in");
     },
-    onSettled(data) {
-      if (data) {
+    onSettled(data, error) {
+      if (error) {
+        console.error('Login error:', error);
+        setAlert('danger', error.message || "We couldn't log you in");
+      } else if (data) {
+        console.log('Login successful:', data);
+        context.auth.user.setData(undefined, data);
+        localStorage.setItem('user', JSON.stringify(data));
+
         const redirect = (router.query.redirect as string) || '/menu';
         router.replace(redirect);
+      } else {
+        console.error('Login request failed for unknown reason');
+        setAlert('danger', "We couldn't log you in. Please try again later.");
       }
     },
   });
@@ -42,13 +55,9 @@ const LoginPage: NextPageWithLayout = ({}) => {
       )}
       <div className={classes.root}>
         <Formik
-          onSubmit={async (values, actions) => {
-            const { email, password } = values;
-            mutate({
-              email,
-              password,
-            });
-
+          onSubmit={(values, actions) => {
+            console.log('Form values:', values);
+            mutate(values);
             actions.resetForm();
           }}
           initialValues={{ email: '', password: '' }}
@@ -67,7 +76,7 @@ const LoginPage: NextPageWithLayout = ({}) => {
               <FormInput name="email" type="email" label="Email Address" />
               <FormInput name="password" type="password" label="Password" />
 
-              <Button className="u-w-100">
+              <Button className="u-w-100" type="submit">
                 {isLoading ? 'Loading...' : 'Login'}
               </Button>
             </div>

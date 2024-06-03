@@ -20,7 +20,7 @@ interface BurgerListItemProps {
 
 const BurgerListItem: React.FC<BurgerListItemProps> = ({ burger }) => {
   const dispatch = useDispatch();
-
+  console.log(burger);
   return (
     <>
       <li className={classes.root}>
@@ -28,8 +28,8 @@ const BurgerListItem: React.FC<BurgerListItemProps> = ({ burger }) => {
           <figure>
             {burger?.photo?.url ? (
               <Image
-                height={500}
-                width={500}
+                height={burger.photo?.height || 500}
+                width={burger.photo?.width || 500}
                 src={burger.photo?.url}
                 alt={burger.name}
                 loading="lazy"
@@ -40,7 +40,9 @@ const BurgerListItem: React.FC<BurgerListItemProps> = ({ burger }) => {
           </figure>
         </div>
         <h2 className={classes.name}>{burger.name}</h2>
-        <p className={classes.price}>Rs {burger.price * burger.itemsInCart}</p>
+        <p className={classes.price}>
+          TK {(burger.prices?.large ?? 0) * (burger.itemsInCart ?? 1)}
+        </p>
 
         <>
           <AddRemoveButton
@@ -66,10 +68,10 @@ const BurgerListItem: React.FC<BurgerListItemProps> = ({ burger }) => {
         </>
 
         <div className={classes.ingredients}>
-          {burger?.ingredients?.map((item: any, i: number) => {
+          {burger?.ingredients?.map((item: any) => {
             if (item.amount > 0) {
               return (
-                <p key={i}>
+                <p key={item.ingredientId || item.id || i}>
                   {item?.ingredient?.name || item?.name || ''} x{' '}
                   {item?.amount || 0}
                 </p>

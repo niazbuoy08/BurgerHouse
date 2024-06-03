@@ -109,8 +109,10 @@ const BurgerCard: React.FC<BurgerCardProps> = ({
                 </Button>
               )}
             </div>
-
-            <p className={classes.price}>TK {burger.price}</p>
+            <p className={classes.price}>
+              TK {parseFloat(burger.prices.large)}
+            </p>{' '}
+            {/* Display the regular price */}
           </div>
         </div>
       </div>

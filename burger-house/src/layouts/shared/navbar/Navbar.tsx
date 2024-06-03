@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, Variants } from 'framer-motion';
 import {
   FiHome,
@@ -45,7 +45,14 @@ const toggleVariants: Variants = {
 const Navbar: React.FC = () => {
   const cartValue = useAppSelector((state) => state.cart.value);
   const { data: user, isLoading } = trpc.auth.user.useQuery();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { isOpen, onToggle, onClose } = useDisclosure();
+
+  useEffect(() => {
+    if (user != null) setIsLoggedIn(true);
+    else setIsLoggedIn(false);
+    console.log('User ', user, isLoading);
+  }, [user]);
 
   return (
     <>
@@ -56,7 +63,7 @@ const Navbar: React.FC = () => {
           passHref
         >
           <Logo size="sm" />
-          Burger House
+          BurgerBliss
         </Link>
         <>
           {isLoading && (
@@ -79,7 +86,7 @@ const Navbar: React.FC = () => {
                 {FiMap}
               </NavLink>
 
-              {!user && (
+              {!isLoggedIn && (
                 <>
                   <NavLink exact label="login" href="/auth/login">
                     {FiLogIn}
@@ -89,7 +96,7 @@ const Navbar: React.FC = () => {
                   </NavLink>
                 </>
               )}
-              {user && (
+              {isLoggedIn && (
                 <NavLink label="dashboard" href="/dashboard">
                   {FiGrid}
                 </NavLink>

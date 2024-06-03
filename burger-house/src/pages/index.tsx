@@ -37,10 +37,16 @@ const IndexPage: NextPageWithLayout = ({}) => {
       <Seo />
       <section className={classes.hero}>
         <div className={classes['hero-display--1']}>
-          <Heading color="white" weight="regular">
-            We make burgers
+          <Heading color="dark" weight="regular">
+            Hurry!! Grab a Bite
           </Heading>
-          <Button isLink href="/menu" variant="tertiary" size="lg">
+          <Button
+            className={classes.button}
+            isLink
+            href="/menu"
+            variant="tertiary"
+            size="lg"
+          >
             Order Now
           </Button>
         </div>

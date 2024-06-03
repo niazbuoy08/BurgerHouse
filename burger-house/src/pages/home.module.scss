@@ -3,17 +3,13 @@
 
 .hero {
   display: grid;
-  min-height: $page-height;
+  min-height: 100vh; // Ensure the hero section takes the full viewport height
   grid-template-columns:
     repeat(2, 1fr)
     [start-display] repeat(4, 1fr) [end-display]
     repeat(6, 1fr);
   grid-template-rows: 1fr 0.55fr;
-  background-image: linear-gradient(
-      rgba($color-white, 0.4),
-      rgba($color-white, 0.3)
-    ),
-    url(/images/home.webp);
+  background-image: url('/images/Hur.png');
   background-size: cover;
   background-attachment: fixed;
 
@@ -26,8 +22,8 @@
 
   @include respond(laptop-sm) {
     background-image: linear-gradient(
-        rgba($color-white, 0.4),
-        rgba($color-white, 0.3)
+        rgba(255, 255, 255, 0.4),
+        rgba(255, 255, 255, 0.3)
       ),
       url(/images/home-md.webp);
   }
@@ -38,8 +34,8 @@
       [start-display] repeat(6, 1fr) [end-display]
       repeat(1, 1fr);
     background-image: linear-gradient(
-        rgba($color-white, 0.4),
-        rgba($color-white, 0.3)
+        rgba(255, 255, 255, 0.4),
+        rgba(255, 255, 255, 0.3)
       ),
       url(/images/home-md.webp);
   }
@@ -47,44 +43,63 @@
   @include respond(phone-lg) {
     grid-template-columns: [start-display] repeat(6, 1fr) [end-display];
     background-image: linear-gradient(
-        rgba($color-white, 0.4),
-        rgba($color-white, 0.3)
+        rgba(255, 255, 255, 0.4),
+        rgba(255, 255, 255, 0.3)
       ),
       url(/images/home-sm.webp);
   }
+
   .hero-display--1 {
+    width: 100vw;
     position: relative;
+    top: 10rem;
+    right: -40rem;
     display: flex;
-    justify-content: right; // Center horizontally
-    align-items: center; // Center vertically
+    justify-content: center; // Center content horizontally
+    align-items: center; // Center content vertically within the container
     text-align: center; // Ensure text within the button is centered
-    margin-bottom: 20px;
+    margin-bottom: 4px;
     flex-direction: column;
 
     h1 {
-      font-size: 5rem;
-      margin-bottom: 1rem; // Space between the heading and the button
+      font-size: 6rem;
+      margin-bottom: 5.5rem; // Space between the heading and the button
     }
 
     .button {
-      position: relative;
-      top: 55%; // Adjust this to move the button vertically
-      left: 48%; // Adjust this to move the button horizontally
+      position: relative; // Position the button relatively within the container
+      bottom: 20px;
       padding: 1rem 2rem;
-      font-size: 1.5rem;
-      background-color: $color-primary;
-      color: $color-white;
+      font-size: 2.5rem;
+      background-color: $color-primary; // Replace with your primary color variable
+      color: $color-white; // Replace with your white color variable
       border: none;
       border-radius: 5px;
       cursor: pointer;
       transition: background-color 0.3s ease-in-out;
 
       &:hover {
-        background-color: darken($color-primary, 10%);
+        background-color: darken(
+          $color-primary,
+          10%
+        ); // Darken the primary color by 10% on hover
       }
     }
   }
+
+  &-display--2 {
+    grid-row: 2/3;
+    grid-column: start-display / end-display;
+    background-color: rgba(255, 255, 255, 0.75);
+    align-items: flex-end;
+    justify-content: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-left: -8rem;
+  }
 }
+
 .make-burger {
   height: 40vh;
   background-image: linear-gradient(

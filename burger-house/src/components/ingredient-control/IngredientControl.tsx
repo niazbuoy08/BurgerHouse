@@ -23,10 +23,10 @@ const IngredientControl: React.FC<IngredientControlProps> = ({
     <>
       <div className={classes.root}>
         <div className={classes.content}>
-          <Image
-            height={40}
-            width={40}
-            src={ingredient.photo}
+          <img
+            height={30}
+            width={30}
+            src={ingredient.iconUrl}
             alt={ingredient.name}
           />
           <p className={clsx([classes.text, 'u-text-capitalize'])}>

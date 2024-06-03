@@ -7,7 +7,7 @@ interface SeoProps {
 }
 
 const Seo: React.FC<SeoProps> = ({ title, children }) => {
-  const fullTitle = `Burger House ${title ? `| ${title}` : ''}`.trim();
+  const fullTitle = `BurgerBliss ${title ? `| ${title}` : ''}`.trim();
 
   return (
     <>

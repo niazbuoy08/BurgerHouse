@@ -13,113 +13,103 @@ const initialState: CartState = {
   value: 0,
 };
 
+const isBrowser = () => typeof window !== 'undefined';
+
+const loadCartFromLocalStorage = () => {
+  if (!isBrowser()) return initialState;
+
+  try {
+    const cart = JSON.parse(localStorage.getItem('cart') || '{}');
+    return {
+      items: cart.items || [],
+      price: cart.price || 0, // Initialize price to 0 if not present
+      value: cart.value || 0, // Initialize value to 0 if not present
+    };
+  } catch (e) {
+    console.error('Failed to load cart from localStorage', e);
+    return initialState;
+  }
+};
+
 export const appSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
     addBurgerToCart: (state, action) => {
       const cartArr = [...state.items];
+      const existingBurger = cartArr.find(
+        (burger) => burger._id === action.payload.burger._id
+      );
 
-      if (cartArr.find((burger) => burger._id === action.payload.burger._id)) {
-        const burgerIndex = cartArr.findIndex(
-          (burger) => burger._id === action.payload.burger._id
-        );
-        cartArr[burgerIndex]!.itemsInCart++;
+      if (existingBurger) {
+        existingBurger.itemsInCart++;
       } else {
         cartArr.push({ ...action.payload.burger, itemsInCart: 1 });
       }
 
-      const cartPrice = state.price + action.payload.burger.price;
-
-      localStorage.setItem(
-        'cart',
-        JSON.stringify({
-          items: cartArr,
-          price: cartPrice,
-          value: state.value + 1,
-        })
-      );
-
+      state.price += action.payload.burger.price;
+      state.value += 1;
       state.items = cartArr;
-      state.price = cartPrice;
-      state.value = state.value + 1;
+
+      if (isBrowser()) {
+        localStorage.setItem('cart', JSON.stringify(state));
+      }
     },
     removeBurgerFromCart: (state, action) => {
       const cartArr = [...state.items];
-
-      // if burger already exists
-      if (cartArr.find((burger) => burger._id === action.payload.burger._id)) {
-        const burgerIndex = cartArr.findIndex(
-          (burger) => burger._id === action.payload.burger._id
-        );
-
-        if (burgerIndex !== -1) {
-          if (cartArr[burgerIndex]!.itemsInCart > 1) {
-            cartArr[burgerIndex]!.itemsInCart--;
-          } else {
-            cartArr.splice(burgerIndex, 1);
-          }
-        }
-      }
-
-      const cartPrice = state.price - action.payload.burger.price;
-
-      localStorage.setItem(
-        'cart',
-        JSON.stringify({
-          items: cartArr,
-          price: cartPrice,
-          value: state.value - 1,
-        })
+      const existingBurger = cartArr.find(
+        (burger) => burger._id === action.payload.burger._id
       );
 
-      state.items = cartArr;
-      state.price = cartPrice;
-      state.value = state.value - 1;
+      if (existingBurger) {
+        if (existingBurger.itemsInCart > 1) {
+          existingBurger.itemsInCart--;
+        } else {
+          cartArr.splice(cartArr.indexOf(existingBurger), 1);
+        }
+        state.price -= action.payload.burger.price;
+        state.value -= 1;
+        state.items = cartArr;
+
+        if (isBrowser()) {
+          localStorage.setItem('cart', JSON.stringify(state));
+        }
+      }
     },
     removeBurgerInstancesFromCart: (state, action) => {
       const cartArr = [...state.items];
-
-      if (cartArr.find((burger) => burger._id === action.payload.burger._id)) {
-        const burgerIndex = cartArr.findIndex(
-          (burger) => burger._id === action.payload.burger._id
-        );
-
-        cartArr.splice(burgerIndex, 1);
-      }
-
-      const cartPrice =
-        state.price -
-        action.payload.burger.price * action.payload.burger.itemsInCart;
-
-      const cartValue = state.value - action.payload.burger.itemsInCart;
-
-      localStorage.setItem(
-        'cart',
-        JSON.stringify({
-          items: cartArr,
-          price: cartPrice,
-          value: cartValue,
-        })
+      const existingBurger = cartArr.find(
+        (burger) => burger._id === action.payload.burger._id
       );
 
-      state.items = cartArr;
-      state.price = cartPrice;
-      state.value = cartValue;
+      if (existingBurger) {
+        state.price -= existingBurger.price * existingBurger.itemsInCart;
+        state.value -= existingBurger.itemsInCart;
+        cartArr.splice(cartArr.indexOf(existingBurger), 1);
+        state.items = cartArr;
+
+        if (isBrowser()) {
+          localStorage.setItem('cart', JSON.stringify(state));
+        }
+      }
     },
     clearCart: (state) => {
       state.items = [];
       state.price = 0;
       state.value = 0;
 
-      localStorage.removeItem('cart');
+      if (isBrowser()) {
+        localStorage.removeItem('cart');
+      }
     },
     initCart: (state) => {
-      const cart = JSON.parse(localStorage.getItem('cart') || '{}');
+      if (isBrowser()) {
+        const cart = JSON.parse(localStorage.getItem('cart') || '{}');
 
-      state.items = cart.items || [];
-      state.price = cart.price || 0;
-      state.value = cart.value || 0;
+        state.items = cart.items || [];
+        state.price = cart.price || 0;
+        state.value = cart.value || 0;
+      }
     },
   },
 });

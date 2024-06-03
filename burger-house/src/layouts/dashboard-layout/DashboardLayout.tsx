@@ -17,10 +17,13 @@ const DashboardLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { isLoading, data } = trpc.auth.user.useQuery();
 
   React.useEffect(() => {
-    if (!isLoading && !data) {
+    if (!isLoading) {
+      console.error('Failed to fetch user:');
+      router.replace('/auth/login?redirect=/dashboard');
+    } else if (!isLoading && !data) {
       router.replace('/auth/login?redirect=/dashboard');
     }
-  }, [router, isLoading, data]);
+  }, [isLoading, data, router]);
 
   return (
     <>

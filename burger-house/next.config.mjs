@@ -7,7 +7,7 @@ const config = {
     defaultLocale: 'en',
   },
   images: {
-    domains: ['ribsandburgers.com'],
+    domains: ['ribsandburgers.com', 'cdn-icons-png.flaticon.com'],
   },
 };
 

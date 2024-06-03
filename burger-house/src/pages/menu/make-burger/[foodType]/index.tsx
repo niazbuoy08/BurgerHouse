@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-
+import React, { useEffect } from 'react';
 import classes from './food-type.module.scss';
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 import { useRouter } from 'next/router';
@@ -69,6 +69,7 @@ const MakeBurger: NextPageWithLayout = () => {
   const displayIngredients = useAppSelector(
     (state) => state.customBurger.displayIngredients
   );
+
   const ingredients = useAppSelector((state) => state.customBurger.ingredients);
 
   const burgerPrice = useAppSelector((state) => state.customBurger.burgerPrice);
@@ -82,16 +83,9 @@ const MakeBurger: NextPageWithLayout = () => {
   const addToCart = async () => {
     let id = '';
 
-    const cartIngredients = [...ingredients];
-
-    ingredients.forEach((ingredient: any) => {
+    ingredients.forEach((ingredient) => {
       if (ingredient.amount !== 0)
         id += `${ingredient.name}-${ingredient.amount}-`;
-    });
-
-    cartIngredients.forEach((ingredient: any) => {
-      // eslint-disable-next-line
-      ingredient = { ...ingredient, items: ingredient.amount };
     });
 
     const burger = {
@@ -105,6 +99,8 @@ const MakeBurger: NextPageWithLayout = () => {
     dispatch(addBurgerToCart({ burger }));
     setAlert('success', 'Added burger to cart');
   };
+  console.log('Ingredients:', ingredients);
+  console.log('Calculated Price:', burgerPrice);
 
   if (isLoading) {
     return <PageLoader variant="embed" />;

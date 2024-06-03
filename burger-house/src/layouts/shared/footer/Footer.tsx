@@ -27,8 +27,7 @@ const Footer: React.FC = () => {
           </Link>
           .{' '}
           <span className={classes.copyright}>
-            Copyright &copy; {new Date(Date.now()).getFullYear()} by Sreekar
-            Venkata Nutulapati
+            Copyright &copy; {new Date(Date.now()).getFullYear()} BurgerBliss
           </span>
         </p>
 

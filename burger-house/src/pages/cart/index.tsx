@@ -11,6 +11,7 @@ import { trpc } from '../../utils/trpc';
 import { NextPageWithLayout } from '../_app';
 
 import classes from './cart.module.scss';
+import useAlert from '../../hooks/use-alert';
 
 const CartPage: NextPageWithLayout = ({}) => {
   const router = useRouter();
@@ -18,8 +19,24 @@ const CartPage: NextPageWithLayout = ({}) => {
   const cartItems = useAppSelector((state) => state.cart.items);
   const cartValue = useAppSelector((state) => state.cart.value);
   const cartPrice = useAppSelector((state) => state.cart.price);
+
+  let subTotal = 0;
+  cartItems.forEach((item) => {
+    console.log(item); // This will help confirm the structure of each item.
+    if (item.prices && typeof item.prices.large === 'number') {
+      subTotal += item.prices.large;
+    } else {
+      console.error('Invalid item prices:', item);
+    }
+  });
+
+  let tax = 30;
+  let taxPrice = subTotal + tax;
+
   const user = context.auth.user.getData();
   const dispatch = useAppDispatch();
+
+  const { alertType, setAlert, showAlert, alertMessage } = useAlert();
 
   const { mutate: createOrder, isLoading } = trpc.order.create.useMutation({
     onSuccess() {
@@ -27,6 +44,8 @@ const CartPage: NextPageWithLayout = ({}) => {
       router.replace('/dashboard');
     },
   });
+
+  console.log(user);
 
   return (
     <>
@@ -58,18 +77,18 @@ const CartPage: NextPageWithLayout = ({}) => {
                 <ul className={classes['total__details']}>
                   <li className={classes['total__item']}>
                     <p className="u-fw-400 u-text-primary">Subtotal</p>
-                    <p className="u-text-tertiary">Rs {cartPrice}</p>
+                    <p className="u-text-tertiary">TK {subTotal}</p>
                   </li>
                   <li className={classes['total__item']}>
                     <p className="u-fw-400 u-text-primary">Tax</p>
-                    <p className="u-text-tertiary">Rs 30</p>
+                    <p className="u-text-tertiary">{tax}</p>
                   </li>
                 </ul>
               </div>
               <div className={classes['total__cta__container']}>
                 <div className={clsx([classes['total__cta']])}>
                   <h1>Total</h1>
-                  <h1 className="u-text-tertiary">Rs {cartPrice + 30}</h1>
+                  <h1 className="u-text-tertiary">TK {taxPrice}</h1>
                 </div>
                 <div className={classes['total__btn']}>
                   {user ? (
@@ -115,12 +134,15 @@ const CartPage: NextPageWithLayout = ({}) => {
                     </Button>
                   ) : (
                     <Button
+                      onClick={() => {
+                        setAlert('success', 'Ordered successfully');
+                      }}
                       className="u-w-100"
                       variant="primary-outline"
                       isLink
-                      href="/auth/login?redirect=/cart"
+                      href="/menu"
                     >
-                      Login To Place Order
+                      Place Order
                     </Button>
                   )}
                 </div>
